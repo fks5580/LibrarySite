@@ -1,0 +1,35 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">도서 정보 - @Model.BookTitle</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-10">
+        <div class="panel-heading">
+            <label>제목 : </label>@Model.BookTitle
+        </div>
+        <div class="panel-heading">
+            <label>저자 : </label>@Model.BookWriter
+        </div>
+        <div class="panel-heading">
+            <label>요약 : </label>@Model.BookSummary
+        </div>
+        <div class="panel-heading">
+            <label>출판사 : </label>@Model.BookPublisher
+        </div>
+        <div class="panel-heading">
+            <label>출판일 : </label>@Model.BookPublish_date
+        </div>
+        <div class="panel-heading">
+            <label>위치 : </label>@Model.BookLocation
+        </div>
+    </div>
+    <div class="panel-footer text-right">
+        @if (Context.Session.GetString("USER_LOGIN_KEY") != null && Context.Session.GetString("USER_LOGIN_KEY").Equals("master") == true)
+        {
+            <a class="btn btn-warning" asp-controller="Book" asp-action="Delete" asp-route-bookNo="@Model.BookNo">삭제</a>
+        }
+        <a class="btn btn-primary" asp-controller="Book" asp-action="Index">목록</a>
+    </div>
+</div>

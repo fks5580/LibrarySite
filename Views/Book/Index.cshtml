@@ -1,0 +1,108 @@
+﻿@model IEnumerable<LibrarySite.Models.Book>
+
+@{
+    int pageNum = ViewBag.Page ?? 1;
+    int totalCount = ViewBag.TotalCount ?? 0;
+    int maxListcount = ViewBag.MaxListcount ?? 1;
+    int totalPageCount = Convert.ToInt32(Math.Ceiling((double)totalCount / maxListcount));
+}
+
+<div style="float:right">
+    <div class="btn-group">
+        @if (Context.Session.GetString("USER_LOGIN_KEY") != null && Context.Session.GetString("USER_LOGIN_KEY").Equals("master") == true)
+        {
+            <a class="btn btn-warning" asp-controller="Book" asp-action="Add">도서 등록</a>
+        }
+        else
+        {
+            <span>&nbsp;</span>
+        }
+    </div>
+</div>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>제목</th>
+            <th>저자</th>
+            <th>출판사</th>
+            <th>출판일</th>
+            <th>위치</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var note in Model)
+        {
+            <tr>
+                <td><a asp-controller="Book" asp-action="Detail" asp-route-bookNo="@note.BookNo">@note.BookTitle</a></td>
+                <td>@note.BookWriter</td>
+                <td>@note.BookPublisher</td>
+                <td>@note.BookPublish_date</td>
+                <td>@note.BookLocation</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form style="width:350px;float:left;">
+    <div class="input-group">
+        <span class="input-group-addon">
+            <select name="searchKind">
+                @if(ViewBag.SearchKind =="BookTitle")
+                {
+                    <option value="BookTitle" selected>제목</option>
+                }
+                else
+                {
+                    <option value="BookTitle">제목</option>
+                }
+                @if (ViewBag.SearchKind == "BookWriter")
+                {
+                    <option value="BookWriter" selected>저자</option>
+                }
+                else
+                {
+                    <option value="BookWriter">저자</option>
+                }
+                @if (ViewBag.SearchKind == "BookPublisher")
+                {
+                    <option value="BookPublisher" selected>출판사</option>
+                }
+                else
+                {
+                    <option value="BookPublisher">출판사</option>
+                }
+                @if (ViewBag.SearchKind == "BookPublish_date")
+                {
+                    <option value="BookPublish_date" selected>출판일</option>
+                }
+                else
+                {
+                    <option value="BookPublish_date">출판일</option>
+                }
+                @if (ViewBag.SearchKind == "BookLocation")
+                {
+                    <option value="BookLocation" selected>위치</option>
+                }
+                else
+                {
+                    <option value="BookLocation">위치</option>
+                }
+            </select>
+        </span>
+        <input class="form-control" type="text" name="keyword" value="@(ViewBag.Keyword)" />
+        <span class="input-group-btn">
+            <button class="btn btn-info" type="submit" asp-route-page="@pageNum">검색</button>
+        </span>
+    </div>
+</form>
+
+<div class="text-center">
+    <div class="btn-group">
+        @for (int i = 1; i <= totalPageCount; i++)
+        {
+            <a class="btn btn-@(pageNum == i ? "primary" : "default")" href="?page=@i&searchKind=@(ViewBag.SearchKind)&keyword=@(ViewBag.Keyword)">@i</a>
+        }
+    </div>
+</div>
+

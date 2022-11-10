@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LibrarySite</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/trumbowyg/dist/ui/trumbowyg.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LibrarySite.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">00도서관</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="nav navbar-nav">
+                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index" asp-route-page="1">자료 검색</a></li>
+                        <li><a class="nav-link text-dark" asp-area="" asp-controller="Note" asp-action="Index" asp-route-page="1">문의 게시판</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        @if (Context.Session.GetString("USER_LOGIN_KEY") == null)
+                        {
+                            <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">회원가입</a></li>
+                            <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">로그인</a></li>
+                        }
+                        else
+                        {
+                            <li><a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">로그아웃</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - LibrarySite - 김혜란
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/trumbowyg/dist/trumbowyg.min.js"></script>
+    <script src="~/lib/trumbowyg/dist/plugins/upload/trumbowyg.upload.js"></script>
+    <script src="~/lib/trumbowyg/dist/langs/ko.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

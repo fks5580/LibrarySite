@@ -1,0 +1,73 @@
+﻿@model IEnumerable<LibrarySite.Models.Note>
+
+@{
+    int pageNum = ViewBag.Page ?? 1;
+    int totalCount = ViewBag.TotalCount ?? 0;
+    int maxListcount = ViewBag.MaxListcount ?? 1;
+    int totalPageCount = Convert.ToInt32(Math.Ceiling((double)totalCount / maxListcount));
+}
+
+<div style="float:right">
+    <div class="btn-group">
+        <a class="btn btn-warning" asp-controller="Note" asp-action="Add">게시물 작성</a>
+    </div>
+</div>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var note in Model)
+        {
+            <tr>
+                <td>@note.NoteNo</td>
+                <td><a asp-controller="Note" asp-action="Detail" asp-route-noteNo="@note.NoteNo">@note.NoteTitle</a></td>
+                <td>@note.UserNo</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form style="width:350px;float:left;">
+    <div class="input-group">
+        <span class="input-group-addon">
+            <select name="searchKind">
+                @if (ViewBag.SearchKind == "NoteTitle")
+                {
+                    <option value="NoteTitle" selected>제목</option>
+                }
+                else
+                {
+                    <option value="NoteTitle">제목</option>
+                }
+                @if (ViewBag.SearchKind == "UserNo")
+                {
+                    <option value="UserNo" selected>작성자</option>
+                }
+                else
+                {
+                    <option value="UserNo">작성자</option>
+                }
+            </select>
+        </span>
+        <input class="form-control" type="text" name="keyword" value="@(ViewBag.Keyword)" />
+        <span class="input-group-btn">
+            <button class="btn btn-info" type="submit" asp-route-page="@pageNum">검색</button>
+        </span>
+    </div>
+</form>
+
+<div class="text-center">
+    <div class="btn-group">
+        @for (int i = 1; i <= totalPageCount; i++)
+        {
+            <a class="btn btn-@(pageNum == i ? "primary" : "default")" href="?page=@i&searchKind=@(ViewBag.SearchKind)&keyword=@(ViewBag.Keyword)">@i</a>
+        }
+    </div>
+</div>
+
